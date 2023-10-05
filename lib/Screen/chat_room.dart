@@ -333,7 +333,6 @@ class ChatRoomPage extends StatelessWidget {
   }
 
   void deleteMessage(messageId) async {
-    // Delete the message from Firestore
     await FirebaseFirestore.instance
         .collection("chatroom")
         .doc(chatroom.chatroomid)
@@ -344,7 +343,6 @@ class ChatRoomPage extends StatelessWidget {
   }
 
   void editMessage(String messageId, String newText) async {
-    // Update the message in Firestore
     await FirebaseFirestore.instance
         .collection("chatroom")
         .doc(chatroom.chatroomid)

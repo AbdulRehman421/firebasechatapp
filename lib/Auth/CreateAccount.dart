@@ -1,8 +1,8 @@
 import 'package:chatapp/Auth/Login.dart';
+import 'package:chatapp/Models/UserModel.dart';
 import 'package:chatapp/Models/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import '../Models/UserModel.dart';
 import 'Methods.dart';
 import 'dart:io';
 

@@ -64,285 +64,285 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         body: isLoading
             ? Center(
-                child: Container(
-                  height: size.height / 20,
-                  width: size.height / 20,
-                  child: CircularProgressIndicator(),
-                ),
-              )
+          child: Container(
+            height: size.height / 20,
+            width: size.height / 20,
+            child: CircularProgressIndicator(),
+          ),
+        )
             : Form(
-                key: _key,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: size.height / 20,
-                      ),
-                      SizedBox(
-                        height: size.height / 50,
-                      ),
-                      Container(
-                        width: size.width / 1.1,
-                        child: Text(
-                          "Welcome",
-                          style: TextStyle(
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: size.width / 1.1,
-                        child: Text(
-                          "Sign In to Contiue!",
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: size.height / 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: TextFormField(
-                          // inputFormatters: [maskFormatter],
-                          controller: _email,
-                          decoration: InputDecoration(
-                              hintText: "abc@gmail.com",
-                              // errorText: _isEmailValid ? null : 'Invalid email format',
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              prefix: SizedBox(
-                                  width: 50, child: Icon(Icons.email_outlined)),
-                              label: Text('Email')),
-                          onChanged: (value) {
-                            _validateEmail(value);
-                          },
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return 'Please enter email';
-                          //   }
-                          //   return null;
-                          // },
-                          validator: (val) => val!.isEmpty ||
-                                  !val.contains("@") ||
-                                  !val.contains('.')
-                              ? "enter a valid eamil"
-                              : null,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: TextFormField(
-                          controller: _password,
-                          inputFormatters: [maskFormatter],
-                          obscureText: _passwordVisible,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            prefix: SizedBox(
-                                width: 50, child: Icon(Icons.password)),
-                            label: Text('Password'),
-                            hintText: "Password",
-                            // errorText: _isPassValid ? null : 'Invalid password format',
-
-                            // errorText: _isPassValid ? null : 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 special character, 1 number, and be between 8 and 30 characters long.',
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.black,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _passwordVisible = !_passwordVisible;
-                                });
-                              },
-                            ),
-                          ),
-                          onChanged: (password) => onPasswordChanged(password),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter password';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 500),
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  color: _isPasswordEightCharacters
-                                      ? Colors.green
-                                      : Colors.red,
-                                  border: _isPasswordEightCharacters
-                                      ? Border.all(color: Colors.transparent)
-                                      : Border.all(color: Colors.grey.shade400),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Center(
-                                child: Icon(
-                                  _isPasswordEightCharacters
-                                      ? Icons.check
-                                      : Icons.clear,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Contains at least 8 characters")
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 500),
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  color: _hasPasswordOneNumber
-                                      ? Colors.green
-                                      : Colors.red,
-                                  border: _hasPasswordOneNumber
-                                      ? Border.all(color: Colors.transparent)
-                                      : Border.all(color: Colors.grey.shade400),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Center(
-                                child: Icon(
-                                  _hasPasswordOneNumber
-                                      ? Icons.check
-                                      : Icons.clear,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Contains at least 1 number")
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 500),
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  color: _hasPasswordSpecialChar
-                                      ? Colors.green
-                                      : Colors.red,
-                                  border: _hasPasswordSpecialChar
-                                      ? Border.all(color: Colors.transparent)
-                                      : Border.all(color: Colors.grey.shade400),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Center(
-                                child: Icon(
-                                  _hasPasswordSpecialChar
-                                      ? Icons.check
-                                      : Icons.clear,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Contains at least Special Chracter")
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: AnimatedContainer(
-                              duration: Duration(milliseconds: 500),
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  color: _hasPasswordCapLet
-                                      ? Colors.green
-                                      : Colors.red,
-                                  border: _hasPasswordCapLet
-                                      ? Border.all(color: Colors.transparent)
-                                      : Border.all(color: Colors.grey.shade400),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: Center(
-                                child: Icon(
-                                  _hasPasswordCapLet
-                                      ? Icons.check
-                                      : Icons.clear,
-                                  color: Colors.white,
-                                  size: 15,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Contains at least Capital Letter")
-                        ],
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      SizedBox(
-                        height: size.height / 10,
-                      ),
-                      customButton(size),
-                      SizedBox(
-                        height: size.height / 40,
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => CreateAccount())),
-                        child: Text(
-                          "Create Account",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )
-                    ],
+          key: _key,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height / 20,
+                ),
+                SizedBox(
+                  height: size.height / 50,
+                ),
+                Container(
+                  width: size.width / 1.1,
+                  child: Text(
+                    "Welcome",
+                    style: TextStyle(
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
+                Container(
+                  width: size.width / 1.1,
+                  child: Text(
+                    "Sign In to Contiue!",
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height / 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextFormField(
+                    // inputFormatters: [maskFormatter],
+                    controller: _email,
+                    decoration: InputDecoration(
+                        hintText: "abc@gmail.com",
+                        // errorText: _isEmailValid ? null : 'Invalid email format',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        prefix: SizedBox(
+                            width: 50, child: Icon(Icons.email_outlined)),
+                        label: Text('Email')),
+                    onChanged: (value) {
+                      _validateEmail(value);
+                    },
+                    // validator: (value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return 'Please enter email';
+                    //   }
+                    //   return null;
+                    // },
+                    validator: (val) => val!.isEmpty ||
+                        !val.contains("@") ||
+                        !val.contains('.')
+                        ? "enter a valid eamil"
+                        : null,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: TextFormField(
+                    controller: _password,
+                    inputFormatters: [maskFormatter],
+                    obscureText: _passwordVisible,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      prefix: SizedBox(
+                          width: 50, child: Icon(Icons.password)),
+                      label: Text('Password'),
+                      hintText: "Password",
+                      // errorText: _isPassValid ? null : 'Invalid password format',
+
+                      // errorText: _isPassValid ? null : 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 special character, 1 number, and be between 8 and 30 characters long.',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    onChanged: (password) => onPasswordChanged(password),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: _isPasswordEightCharacters
+                                ? Colors.green
+                                : Colors.red,
+                            border: _isPasswordEightCharacters
+                                ? Border.all(color: Colors.transparent)
+                                : Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Icon(
+                            _isPasswordEightCharacters
+                                ? Icons.check
+                                : Icons.clear,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Contains at least 8 characters")
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: _hasPasswordOneNumber
+                                ? Colors.green
+                                : Colors.red,
+                            border: _hasPasswordOneNumber
+                                ? Border.all(color: Colors.transparent)
+                                : Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Icon(
+                            _hasPasswordOneNumber
+                                ? Icons.check
+                                : Icons.clear,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Contains at least 1 number")
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: _hasPasswordSpecialChar
+                                ? Colors.green
+                                : Colors.red,
+                            border: _hasPasswordSpecialChar
+                                ? Border.all(color: Colors.transparent)
+                                : Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Icon(
+                            _hasPasswordSpecialChar
+                                ? Icons.check
+                                : Icons.clear,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Contains at least Special Chracter")
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: _hasPasswordCapLet
+                                ? Colors.green
+                                : Colors.red,
+                            border: _hasPasswordCapLet
+                                ? Border.all(color: Colors.transparent)
+                                : Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Icon(
+                            _hasPasswordCapLet
+                                ? Icons.check
+                                : Icons.clear,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Contains at least Capital Letter")
+                  ],
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                SizedBox(
+                  height: size.height / 10,
+                ),
+                customButton(size),
+                SizedBox(
+                  height: size.height / 40,
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => CreateAccount())),
+                  child: Text(
+                    "Create Account",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -391,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
               UserCredential? credential;
               credential = await FirebaseAuth.instance
                   .signInWithEmailAndPassword(
-                      email: _email.text, password: _password.text);
+                  email: _email.text, password: _password.text);
               String uid = credential.user!.uid;
 
               DocumentSnapshot userData = await FirebaseFirestore.instance
@@ -399,7 +399,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   .doc(uid)
                   .get();
               UserModel userModel =
-                  UserModel.fromMap(userData.data() as Map<String, dynamic>);
+              UserModel.fromMap(userData.data() as Map<String, dynamic>);
 
               // validatePassword();
               if (user != null) {

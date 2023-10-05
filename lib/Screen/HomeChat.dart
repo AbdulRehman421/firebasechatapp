@@ -208,7 +208,7 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
             //       Navigator.push(
             //           context,
             //           MaterialPageRoute(
-            //             builder: (context) => AccountScreen(userModel: widget.userModel),
+            //             builder: (context) => AccountScreen(GroupUserModel: widget.GroupUserModel),
             //           ));
             //     },
             //     icon: Icon(Icons.account_circle_outlined)),
@@ -256,7 +256,7 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
                           participantKeys.remove(widget.userModel.uid);
 
                           return FutureBuilder(
-                            future: FirebaseHelper.getUserModelById(
+                            future: FirebaseHelper.getGroupUserModelById(
                                 participantKeys[0]),
                             builder: (context, userData) {
                               if (userData.connectionState ==
@@ -387,7 +387,7 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
               return SearchPage(
                   userModel: widget.userModel,
                   firebaseUser: widget.firebaseUser);
-              // return SearchPage(userModel: widget.userModel, firebaseUser: widget.firebaseUser);
+              // return SearchPage(GroupUserModel: widget.GroupUserModel, firebaseUser: widget.firebaseUser);
             }));
           },
           child: Icon(Icons.search),

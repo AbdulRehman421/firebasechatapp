@@ -108,8 +108,21 @@ class _GroupInfoState extends State<GroupInfo> {
 
     try {
       if (isAdmin) {
+        // Delete the group for all users
+        List memberIds = membersList.map((member) => member['uid']).toList();
         await _firestore.collection('groups').doc(widget.groupId).delete();
+
+        // Remove the group reference from each user
+        for (String memberId in memberIds) {
+          await _firestore
+              .collection('users')
+              .doc(memberId)
+              .collection('groups')
+              .doc(widget.groupId)
+              .delete();
+        }
       } else {
+        // Remove the user from the group
         List<Map<String, dynamic>> updatedMembersList = List.from(membersList);
         for (int i = 0; i < updatedMembersList.length; i++) {
           if (updatedMembersList[i]['uid'] == _auth.currentUser!.uid) {
@@ -120,17 +133,19 @@ class _GroupInfoState extends State<GroupInfo> {
         await _firestore.collection('groups').doc(widget.groupId).update({
           "members": updatedMembersList,
         });
+
+        // Remove the group reference from the current user
+        await _firestore
+            .collection('users')
+            .doc(_auth.currentUser!.uid)
+            .collection('groups')
+            .doc(widget.groupId)
+            .delete();
       }
-      await _firestore
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .collection('groups')
-          .doc(widget.groupId)
-          .delete();
 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => GroupChatHomeScreen()),
-            (route) => false,
+            (route) => true,
       );
     } catch (e) {
       print("Error leaving the group: $e");
@@ -139,6 +154,7 @@ class _GroupInfoState extends State<GroupInfo> {
       });
     }
   }
+
 
 
 

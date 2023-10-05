@@ -105,32 +105,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: Text('Edit Profile'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          // Add form fields for editing.
-          child: Column(
-            children: [
-              UserImagePicker(onPickImage: (pickedImage) {
-                _selectedImage = pickedImage;
-              }),
-              TextFormField(
-                controller: _fullNameController,
-                decoration: InputDecoration(labelText: 'Full Name'),
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  _updateProfile();
-                },
-                child: Text('Save Changes'),
-              ),
-            ],
-          ),
-        )
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            // Add form fields for editing.
+            child: Column(
+              children: [
+                UserImagePicker(onPickImage: (pickedImage) {
+                  _selectedImage = pickedImage;
+                }),
+                TextFormField(
+                  controller: _fullNameController,
+                  decoration: InputDecoration(labelText: 'Full Name'),
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    _updateProfile();
+                  },
+                  child: Text('Save Changes'),
+                ),
+              ],
+            ),
+          )
 
       ),
     );

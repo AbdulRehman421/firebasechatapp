@@ -1,8 +1,8 @@
-import 'package:chatapp/Models/UserModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Models/UserModel.dart';
 import 'EditProfile.dart';
 class AccountScreen extends StatefulWidget {
   final UserModel userModel;

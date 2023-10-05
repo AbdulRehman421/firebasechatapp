@@ -8,7 +8,7 @@
 // import 'package:image_picker/image_picker.dart';
 // import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 // import '../Models/UIHelper.dart';
-// import '../Models/UserModel.dart';
+// import '../Models/GroupUserModel.dart';
 // import '../Screen/HomeChat.dart';
 // import 'dart:developer';
 // import 'dart:io';
@@ -16,9 +16,9 @@
 //
 //
 // class CreateAccount extends StatefulWidget {
-//   final UserModel? userModel;
+//   final GroupUserModel? GroupUserModel;
 //   final User? firebaseUser;
-//   const CreateAccount({Key? key,  this.userModel,  this.firebaseUser}) : super(key: key);
+//   const CreateAccount({Key? key,  this.GroupUserModel,  this.firebaseUser}) : super(key: key);
 //   @override
 //   _CreateAccountState createState() => _CreateAccountState();
 // }
@@ -87,23 +87,23 @@
 //
 //     UIHelper.showLoadingDialog(context, "Uploading image..");
 //
-//     UploadTask uploadTask = FirebaseStorage.instance.ref("profilepictures").child(widget.userModel!.uid.toString()).putFile(imageFile!);
+//     UploadTask uploadTask = FirebaseStorage.instance.ref("profilepictures").child(widget.GroupUserModel!.uid.toString()).putFile(imageFile!);
 //
 //     TaskSnapshot snapshot = await uploadTask;
 //
 //     String? imageUrl = await snapshot.ref.getDownloadURL();
 //     String? fullname = fullNameController.text.trim();
 //
-//     widget.userModel?.fullname = fullname;
-//     widget.userModel?.profilpic = imageUrl;
+//     widget.GroupUserModel?.fullname = fullname;
+//     widget.GroupUserModel?.profilpic = imageUrl;
 //
-//     await FirebaseFirestore.instance.collection("users").doc(widget.userModel?.uid).set(widget.userModel!.toMap()).then((value) {
+//     await FirebaseFirestore.instance.collection("users").doc(widget.GroupUserModel?.uid).set(widget.GroupUserModel!.toMap()).then((value) {
 //       log("Data uploaded!");
 //       Navigator.popUntil(context, (route) => route.isFirst);
 //       Navigator.pushReplacement(
 //         context,
 //         MaterialPageRoute(builder: (context) {
-//           return HomeChat(userModel: widget.userModel!, firebaseUser: widget.firebaseUser!);
+//           return HomeChat(GroupUserModel: widget.GroupUserModel!, firebaseUser: widget.firebaseUser!);
 //         }),
 //       );
 //     });
@@ -563,8 +563,8 @@
 //       'profileImageUrl': downloadURL,
 //     });
 //
-//     // Optionally, update the userModel locally if needed.
-//     // userModel.profilePicture = downloadURL;
+//     // Optionally, update the GroupUserModel locally if needed.
+//     // GroupUserModel.profilePicture = downloadURL;
 //
 //     // Close the edit profile screen and navigate back to AccountScreen.
 //     Navigator.pop(context);

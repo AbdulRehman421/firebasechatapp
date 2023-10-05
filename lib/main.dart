@@ -40,7 +40,7 @@ void main() async {
   User? currentUser = FirebaseAuth.instance.currentUser;
   if(currentUser != null) {
     // Logged In
-    UserModel? thisUserModel = await FirebaseHelper.getUserModelById(currentUser.uid);
+    UserModel? thisUserModel = await FirebaseHelper.getGroupUserModelById(currentUser.uid);
     if(thisUserModel != null) {
       runApp(MyAppLoggedIn(userModel: thisUserModel, firebaseUser: currentUser));
     }
