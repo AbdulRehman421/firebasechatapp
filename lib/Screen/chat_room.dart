@@ -382,6 +382,7 @@ class ChatRoomPage extends StatelessWidget {
                         width: 10,
                       ),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(snapshot.data!['name'],
                               style: const TextStyle(fontSize: 24)),
@@ -570,57 +571,57 @@ class ChatRoomPage extends StatelessWidget {
                                       },
                                     );
                                   },
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          (currentMessage.sender ==
-                                                  userModel.uid)
-                                              ? MainAxisAlignment.end
-                                              : MainAxisAlignment.start,
-                                      children: [
-                                        if (currentMessage.sender ==
-                                            targetUser.uid)
-                                          CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                targetUser.profilpic
-                                                    .toString()),
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 20),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            (currentMessage.sender ==
+                                                    userModel.uid)
+                                                ? MainAxisAlignment.end
+                                                : MainAxisAlignment.start,
+                                        children: [
+                                          if (currentMessage.sender ==
+                                              targetUser.uid)
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  targetUser.profilpic
+                                                      .toString()),
+                                            ),
+                                          SizedBox(
+                                            width: 10,
                                           ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Container(
-                                            margin: EdgeInsets.symmetric(
-                                              vertical: 2,
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 10,
-                                              horizontal: 10,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: (currentMessage.sender ==
-                                                      userModel.uid)
-                                                  ? Colors.grey
-                                                  : Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            child: Text(
-                                              currentMessage.text.toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
+                                          Container(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 10,
+                                                horizontal: 10,
                                               ),
-                                            )),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        if (currentMessage.sender ==
-                                            userModel.uid)
-                                          CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                userModel.profilpic.toString()),
-                                          )
-                                      ]),
+                                              decoration: BoxDecoration(
+                                                color: (currentMessage.sender ==
+                                                        userModel.uid)
+                                                    ? Colors.grey
+                                                    : Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              child: Text(
+                                                currentMessage.text.toString(),
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              )),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          if (currentMessage.sender ==
+                                              userModel.uid)
+                                            CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  userModel.profilpic.toString()),
+                                            )
+                                        ]),
+                                  ),
                                 );
                               });
                         } else if (snapshot.hasError) {

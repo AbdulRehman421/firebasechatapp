@@ -134,7 +134,7 @@ class GroupChatRoom extends StatelessWidget {
                       height: size.height / 17,
                       width: size.width / 1.3,
                       child: TextField(
-                        controller: _message,
+                       controller: _message,
                         decoration: InputDecoration(
                             hintText: "Send Message",
                             border: OutlineInputBorder(
@@ -165,7 +165,6 @@ class GroupChatRoom extends StatelessWidget {
   }
 
   void onEditMessage(BuildContext context, String messageId, String currentMessage) async {
-    // Show a dialog or a bottom sheet for editing
     TextEditingController editMessageController = TextEditingController(
       text: currentMessage,
     );
@@ -212,7 +211,7 @@ class GroupChatRoom extends StatelessWidget {
       },
     );
   }
-  void onEditMessageDialogue(BuildContext context, String messageId, String currentMessage) async {
+  void onEditMessageDialogue(BuildContext context, String messageId, String currentMessage, isCurrentUser) async {
     // Show a dialog or a bottom sheet for editing
     TextEditingController editMessageController = TextEditingController(
       text: currentMessage,
@@ -237,9 +236,11 @@ class GroupChatRoom extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             ),
+            if(isCurrentUser)
             TextButton(
               child: const Text("Edit"),
               onPressed: () {
+                Navigator.of(context).pop();
                 onEditMessage(context, messageId, currentMessage);
                 // Navigator.of(context).pop();
               },
@@ -254,13 +255,13 @@ class GroupChatRoom extends StatelessWidget {
 
   Widget messageTile(BuildContext context,Size size, Map<String, dynamic> chatMap) {
     return Builder(builder: (_) {
-
+bool isCurrent = chatMap['sendBy'] == _auth.currentUser!.displayName;
       if (chatMap['type'] == "text") {
         return Column(
           children: [
             GestureDetector(
               onLongPress: () {
-                onEditMessageDialogue(context, chatMap['messageId'].toString(), chatMap['message']);
+                onEditMessageDialogue(context, chatMap['messageId'].toString(), chatMap['message'] , isCurrent);
               },
               child: Container(
                 width: size.width,

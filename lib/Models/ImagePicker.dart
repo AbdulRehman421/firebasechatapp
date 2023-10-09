@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-import 'UserModel.dart';
-
-class UserImagePickerEdit extends StatefulWidget {
-  const UserImagePickerEdit({super.key, required this.onPickImage, required this.userModel});
+class UserImagePicker extends StatefulWidget {
+  const UserImagePicker({super.key, required this.onPickImage});
   final void Function(File pickedImage) onPickImage;
-final UserModel userModel;
+
   @override
-  State<UserImagePickerEdit> createState() => _UserImagePickerEditState();
+  State<UserImagePicker> createState() => _UserImagePickerState();
 }
 
-class _UserImagePickerEditState extends State<UserImagePickerEdit> {
+class _UserImagePickerState extends State<UserImagePicker> {
   File? _pickedImageFile;
 
   void _pickImage() async {
@@ -37,14 +35,13 @@ class _UserImagePickerEditState extends State<UserImagePickerEdit> {
         GestureDetector(
           onTap: _pickImage,
           child: CircleAvatar(
-            radius: 60,
-            backgroundColor: Colors.grey,
-            foregroundImage: _pickedImageFile != null
-                ? FileImage(_pickedImageFile!)
-                : NetworkImage(widget.userModel.profilpic.toString()) as ImageProvider,
+              radius: 60,
+              backgroundColor: Colors.grey,
+              foregroundImage:
+              _pickedImageFile != null ? FileImage(_pickedImageFile!) :
+          Image.asset('assets/images/person.png') as ImageProvider
           ),
-        )
-
+        ),
       ],
     );
   }

@@ -203,15 +203,15 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
                       ));
                 },
                 icon: Icon(Icons.group)),
-            // IconButton(
-            //     onPressed: () {
-            //       Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (context) => AccountScreen(GroupUserModel: widget.GroupUserModel),
-            //           ));
-            //     },
-            //     icon: Icon(Icons.account_circle_outlined)),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AccountScreen(userModel : widget.userModel),
+                      ));
+                },
+                icon: Icon(Icons.account_circle_outlined)),
           ],
           leading: IconButton(
             onPressed: () async {

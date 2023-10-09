@@ -110,9 +110,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             // Add form fields for editing.
             child: Column(
               children: [
-                UserImagePicker(onPickImage: (pickedImage) {
+                UserImagePickerEdit(onPickImage: (pickedImage) {
                   _selectedImage = pickedImage;
-                }),
+                }, userModel: widget.userModel,),
                 TextFormField(
                   controller: _fullNameController,
                   decoration: InputDecoration(labelText: 'Full Name'),
