@@ -32,7 +32,7 @@ Future<User?> createAccount(String name, String email, String password,  imageFi
       "email": email,
       "status": "Unavailable",
       "uid": userCredential.user!.uid,
-      "profileImageUrl": imageUrl, // Store the image URL in Firestore
+      "profilpic": imageUrl, // Store the image URL in Firestore
     });
 
     print("Account created successfully");

@@ -560,7 +560,7 @@
 //
 //     // Update the user's profile picture URL in Firestore.
 //     await FirebaseFirestore.instance.collection('users').doc(uid).update({
-//       'profileImageUrl': downloadURL,
+//       'profilpic': downloadURL,
 //     });
 //
 //     // Optionally, update the GroupUserModel locally if needed.

@@ -376,7 +376,7 @@ class ChatRoomPage extends StatelessWidget {
                         radius: 20,
                         // backgroundImage: NetworkImage(targetUser.profilpic.toString()),
                         backgroundImage:
-                            NetworkImage(snapshot.data!['profileImageUrl']),
+                            NetworkImage(snapshot.data!['profilpic']),
                       ),
                       const SizedBox(
                         width: 10,

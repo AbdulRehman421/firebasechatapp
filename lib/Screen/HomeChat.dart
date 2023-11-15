@@ -4,6 +4,7 @@ import 'package:chatapp/Screen/chat_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../Models/ChatRoomModel.dart';
 import '../Models/FirebaseHelper.dart';
 import '../Models/UserModel.dart';
@@ -143,12 +144,15 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStatePropertyAll(Colors.blue)),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ));
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          await GoogleSignIn().signOut();
+
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                            (Route<dynamic> route) => false,
+                          );
                         },
                         child: Text('Yes')),
                   ],
@@ -160,6 +164,7 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
       },
     );
   }
+
   void deleteChatRoom(chatroomId) async {
     // Delete all messages in the chat room
     await FirebaseFirestore.instance
@@ -181,6 +186,7 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
 
     print("Chat room deleted!");
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -208,7 +214,8 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AccountScreen(userModel : widget.userModel),
+                        builder: (context) =>
+                            AccountScreen(userModel: widget.userModel),
                       ));
                 },
                 icon: Icon(Icons.account_circle_outlined)),
@@ -221,11 +228,9 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
           ),
         ),
         body: RefreshIndicator(
-          onRefresh: () async{
+          onRefresh: () async {
             await Future.delayed(Duration(milliseconds: 500));
-            setState(() {
-            });
-
+            setState(() {});
           },
           child: SafeArea(
             child: Container(
@@ -267,56 +272,73 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
 
                                   return ListTile(
                                     onLongPress: () {
-
-                                      showDialog(context: context, builder: (context) {
-                                        return AlertDialog(
-                                          title: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(30),
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Center(
+                                                    child: Text('Delete',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 30,
+                                                  ),
+                                                  Text(
+                                                      'Are you want to Delete this Message'),
+                                                  SizedBox(
+                                                    height: 30,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStatePropertyAll(
+                                                                      Colors
+                                                                          .blue)),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text('No')),
+                                                      ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStatePropertyAll(
+                                                                      Colors
+                                                                          .blue)),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            deleteChatRoom(
+                                                                chatRoomModel
+                                                                    .chatroomid);
+                                                          },
+                                                          child: Text('Yes')),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                            child: Column(
-                                              children: [
-                                                Center(
-                                                  child: Text('Delete',
-                                                      style: TextStyle(fontWeight: FontWeight.bold)),
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Text('Are you want to Delete this Message'),
-                                                SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                            MaterialStatePropertyAll(Colors.blue)),
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                        child: Text('No')),
-                                                    ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                            MaterialStatePropertyAll(Colors.blue)),
-                                                        onPressed: () {
-                                                          Navigator.of(context).pop();
-                                                          deleteChatRoom(chatRoomModel.chatroomid);
-
-                                                        },
-                                                        child: Text('Yes')),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },);
+                                          );
+                                        },
+                                      );
                                       //
-
                                     },
                                     onTap: () {
                                       Navigator.push(
@@ -334,23 +356,24 @@ class _HomeChatState extends State<HomeChat> with WidgetsBindingObserver {
                                     leading: CircleAvatar(
                                       backgroundImage:
                                           // AssetImage('assets/images/person.png'),
-                                      NetworkImage(targetUser.profilpic.toString()),
+                                          NetworkImage(
+                                              targetUser.profilpic.toString()),
                                     ),
                                     trailing: Icon(Icons.message),
                                     title: Text(targetUser.fullname.toString()),
-                                    subtitle: (chatRoomModel.lastMessage
-                                                .toString() !=
-                                            "")
-                                        ? Text(
-                                            chatRoomModel.lastMessage.toString())
-                                        : Text(
-                                            "Say hi to your new friend!",
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                            ),
-                                          ),
+                                    subtitle:
+                                        (chatRoomModel.lastMessage.toString() !=
+                                                "")
+                                            ? Text(chatRoomModel.lastMessage
+                                                .toString())
+                                            : Text(
+                                                "Say hi to your new friend!",
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                ),
+                                              ),
                                   );
                                 } else {
                                   return Container();

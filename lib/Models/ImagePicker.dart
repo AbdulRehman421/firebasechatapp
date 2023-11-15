@@ -38,8 +38,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
               radius: 60,
               backgroundColor: Colors.grey,
               foregroundImage:
-              _pickedImageFile != null ? FileImage(_pickedImageFile!) :
-          Image.asset('assets/images/person.png') as ImageProvider
+              _pickedImageFile != null ? FileImage(_pickedImageFile!) : AssetImage('assets/images/person.png') as ImageProvider
           ),
         ),
       ],

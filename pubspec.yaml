@@ -47,6 +47,10 @@ dependencies:
   mask_text_input_formatter: ^2.5.0
   path_provider: ^2.1.1
   animated_theme_switcher: ^2.0.8
+  google_sign_in: ^6.1.5
+  http: ^1.1.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

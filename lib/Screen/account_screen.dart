@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../Auth/Login.dart';
 import '../Models/UserModel.dart';
@@ -36,7 +37,7 @@ class _AccountScreenState extends State<AccountScreen> {
       setState(() {
         name = userDoc['name'];
         email = userDoc['email'];
-        profileImg = userDoc['profileImageUrl'];
+        profileImg = userDoc['profilpic'];
       });
     }
   }
@@ -212,12 +213,14 @@ class _AccountScreenState extends State<AccountScreen> {
                         style: ButtonStyle(
                             backgroundColor:
                             MaterialStatePropertyAll(Colors.blue)),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ));
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          await GoogleSignIn().signOut();
+
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                                (Route<dynamic> route) => false,
+                          );
                         },
                         child: Text('Yes')),
                   ],

@@ -1,21 +1,34 @@
+import 'dart:math';
+
+import 'package:chatapp/Auth/auth_services.dart';
 import 'package:chatapp/Screen/HomeChat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../Models/UserModel.dart';
 import '../Screen/homescreen.dart';
 import 'CreateAccount.dart';
 import 'Methods.dart';
+import '../main.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
+
+  const LoginScreen({Key? key,}) : super(key: key);
+
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  UserModel? userModel;
+  UserCredential? firebaseUser;
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final RegExp _emailRegExp = RegExp(
@@ -32,6 +45,15 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isEmailValid = false;
   bool _isPassValid = false;
 
+  GoogleSignInAccount? currentuser;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: <String>[
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly'
+      ]
+  );
+
   void _validateEmail(String email) {
     setState(() {
       _isEmailValid = _emailRegExp.hasMatch(email);
@@ -46,12 +68,84 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _passwordVisible = true;
 
+
   void initState() {
+    super.initState();
     _passwordVisible = true;
+    // _googleSignIn.onCurrentUserChanged.listen((account) {
+    //   setState(() {
+    //     currentuser = account;
+    //   });
+    //   if(currentuser!=null){
+    //     print('User is Already Authenticated');
+    //   }
+    // });
+    // _googleSignIn.signInSilently();
+
   }
+
 
   bool isLoading = false;
   final _key = GlobalKey<FormState>();
+  late UserModel users;
+
+
+
+
+  Future<UserModel?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
+      if (googleSignInAccount == null) return null;
+
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+      final OAuthCredential googleAuthCredential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(googleAuthCredential);
+      final User? user = authResult.user;
+
+      return await storeUserInfoInFirestore(user);
+    } catch (e) {
+      print("Error signing in with Google: $e");
+      return null;
+    }
+  }
+
+  Future<UserModel> storeUserInfoInFirestore(User? user) async {
+    if (user == null) {
+      throw Exception("User is null");
+    }
+
+    final CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
+    final DocumentSnapshot userDoc = await usersCollection.doc(user.uid).get();
+
+    if (!userDoc.exists) {
+      final UserModel userModel = UserModel(
+        uid: user.uid,
+        fullname: user.displayName ?? '',
+        email: user.email ?? '',
+        profilpic: user.photoURL ?? '',
+      );
+
+      await usersCollection.doc(user.uid).set({
+        'name': userModel.fullname,
+        'email': userModel.email,
+        'profilpic': userModel.profilpic,
+        'uid' : userModel.uid,
+      });
+
+      return userModel;
+    } else {
+      return UserModel(
+        uid: user.uid,
+        fullname: userDoc['name'],
+        email: userDoc['email'],
+        profilpic: userDoc['profilpic'],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -327,6 +421,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: size.height / 40,
                 ),
+                ElevatedButton(onPressed: () async {
+                  UserModel? userModel = await signInWithGoogle();
+                  UserCredential credential;
+                  FirebaseAuth credentials = await FirebaseAuth.instance;
+                  // credential = await FirebaseAuth.instance;
+                  String uid = credentials.currentUser!.uid;
+
+                  DocumentSnapshot userData = await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .get();
+                  // UserModel userModel =
+                  // UserModel.fromMap(userData.data() as Map<String, dynamic>);
+                  if (userModel != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeChat(userModel: userModel, firebaseUser: credentials.currentUser!),
+                      ),
+                    );
+                  }
+                }, child: Text('Google Sign In')),
+                SizedBox(
+                  height: size.height / 40,
+                ),
                 GestureDetector(
                   onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => CreateAccount())),
@@ -459,6 +578,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           )),
     );
+
   }
 }
 

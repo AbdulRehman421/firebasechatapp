@@ -83,7 +83,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         await FirebaseFirestore.instance.collection('users').doc(uid).update({
           'name': _fullNameController.text,
           'email': _emailController.text,
-          'profileImageUrl': downloadURL,
+          'profilpic': downloadURL,
         });
       } else {
         await FirebaseFirestore.instance.collection('users').doc(uid).update({
