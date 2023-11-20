@@ -421,28 +421,84 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: size.height / 40,
                 ),
-                ElevatedButton(onPressed: () async {
-                  UserModel? userModel = await signInWithGoogle();
-                  UserCredential credential;
-                  FirebaseAuth credentials = await FirebaseAuth.instance;
-                  // credential = await FirebaseAuth.instance;
-                  String uid = credentials.currentUser!.uid;
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                        onTap: () async {
+                          UserModel? userModel = await signInWithGoogle();
+                          UserCredential credential;
+                          FirebaseAuth credentials = await FirebaseAuth.instance;
+                          // credential = await FirebaseAuth.instance;
+                          String uid = credentials.currentUser!.uid;
 
-                  DocumentSnapshot userData = await FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(uid)
-                      .get();
-                  // UserModel userModel =
-                  // UserModel.fromMap(userData.data() as Map<String, dynamic>);
-                  if (userModel != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeChat(userModel: userModel, firebaseUser: credentials.currentUser!),
-                      ),
-                    );
-                  }
-                }, child: Text('Google Sign In')),
+                          DocumentSnapshot userData = await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .get();
+                          // UserModel userModel =
+                          // UserModel.fromMap(userData.data() as Map<String, dynamic>);
+                          if (userModel != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeChat(userModel: userModel, firebaseUser: credentials.currentUser!),
+                              ),
+                            );
+                          }
+                        },
+                        child: Image.asset('assets/images/google0.png')),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    InkWell(
+                        onTap: () async {
+                          UserModel? userModel = await signInWithGoogle();
+                          UserCredential credential;
+                          FirebaseAuth credentials = await FirebaseAuth.instance;
+                          // credential = await FirebaseAuth.instance;
+                          String uid = credentials.currentUser!.uid;
+
+                          DocumentSnapshot userData = await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .get();
+                          // UserModel userModel =
+                          // UserModel.fromMap(userData.data() as Map<String, dynamic>);
+                          if (userModel != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeChat(userModel: userModel, firebaseUser: credentials.currentUser!),
+                              ),
+                            );
+                          }
+                        },
+                        child: Image.asset('assets/images/facebook.png'))
+                  ],
+                ),
+                // ElevatedButton(onPressed: () async {
+                //   UserModel? userModel = await signInWithGoogle();
+                //   UserCredential credential;
+                //   FirebaseAuth credentials = await FirebaseAuth.instance;
+                //   // credential = await FirebaseAuth.instance;
+                //   String uid = credentials.currentUser!.uid;
+                //
+                //   DocumentSnapshot userData = await FirebaseFirestore.instance
+                //       .collection('users')
+                //       .doc(uid)
+                //       .get();
+                //   // UserModel userModel =
+                //   // UserModel.fromMap(userData.data() as Map<String, dynamic>);
+                //   if (userModel != null) {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => HomeChat(userModel: userModel, firebaseUser: credentials.currentUser!),
+                //       ),
+                //     );
+                //   }
+                // }, child: Text('Google Sign In')),
                 SizedBox(
                   height: size.height / 40,
                 ),
